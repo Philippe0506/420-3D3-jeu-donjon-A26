@@ -4,12 +4,14 @@ from models.comportements.comportement_defensif import ComportementDefensif
 from models.comportements.comportement_aleatoire import ComportementAleatoire
 from models.comportements.comportement_furtif import ComportementFurtif
 from models.comportements.comportement_berserker import ComportementBerserker
+from models.comportements.comportement_boss import ComportementBoss
 from models.actions.action_defense import ActionDefend
+
 
 class Jeu:
     def __init__(self):
-        self.heros_hp = 100
-        self.heros_hp_max = 100
+        self.heros_hp = 300
+        self.heros_hp_max = 300
         self.heros_attaque = 20
 
         self.ennemis = [
@@ -17,6 +19,7 @@ class Jeu:
             Ennemi("Dragon",  hp=100, attaque=12, comportement=ComportementDefensif()),
             Ennemi("Spectre", hp=40,  attaque=10, comportement=ComportementAleatoire()),
             Ennemi("Voleur",  hp=30,  attaque=10, comportement=ComportementFurtif()),
+            Ennemi("Boss",   hp=150, attaque=15, comportement=ComportementBoss())
         ]
 
     def ennemis_vivants(self):
@@ -87,7 +90,7 @@ class Jeu:
 
             # Adaptation des comportements
             for ennemi in self.ennemis_vivants():
-                if ennemi.hp < ennemi.hp_max * 0.3:
+                if ennemi.hp < ennemi.hp_max * 0.3 and ennemi.get_comportement().__class__ != ComportementBoss:
                     ennemi.set_comportement(ComportementDefensif())
                     print(f"  ⚡ {ennemi.nom} change de tactique — il devient Défensif !")
 
